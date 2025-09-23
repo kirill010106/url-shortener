@@ -1,0 +1,10 @@
+template: testify
+packages:
+    url-shortener/internal/http-server/handlers/redirect:
+        config:
+            dir: "{{.InterfaceDir}}"
+            filename: "URLGetter.go"
+            pkgname: "redirect"
+            structname: "Mock{{.InterfaceName}}"
+        interfaces:
+            URLGetter:
