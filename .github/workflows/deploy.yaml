@@ -56,9 +56,9 @@ jobs:
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "
           mkdir -p /root/apps/url-shortener/config &&
-          echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > /root/apps/url-shortener/config.env &&
-          echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> /root/apps/url-shortener/config.env &&
-          chmod 600 /root/apps/url-shortener/config.env"
+          echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > /root/apps/url-shortener/.env &&
+          echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> /root/apps/url-shortener/.env &&
+          chmod 600 /root/apps/url-shortener/.env"
       - name: Copy systemd service file
         run: |
           scp -i deploy_key.pem -o StrictHostKeyChecking=no ${{ github.workspace }}/deployment/url-shortener.service ${{ env.HOST }}:/tmp/url-shortener.service
