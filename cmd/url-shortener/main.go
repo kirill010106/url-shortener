@@ -25,7 +25,7 @@ const (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("config.env"); err != nil {
 		log.Fatalf("Error while loading .env file")
 	}
 	cfg := config.MustLoad()
