@@ -9,7 +9,7 @@ ExecStart=/root/apps/url-shortener/url-shortener
 Restart=always
 RestartSec=4
 StandardOutput=inherit
-EnvironmentFile=/root/apps/url-shortener/config.env
+EnvironmentFile=/root/apps/url-shortener/.env
 
 [Install]
 WantedBy=multi-user.target

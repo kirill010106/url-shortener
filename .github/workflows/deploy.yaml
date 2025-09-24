@@ -55,7 +55,6 @@ jobs:
       - name: Create environment file on server
         run: |
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ env.HOST }} "
-          mkdir -p /root/apps/url-shortener/config &&
           echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > /root/apps/url-shortener/.env &&
           echo 'HTTP_SERVER_PASSWORD=${{ secrets.HTTP_SERVER_PASSWORD }}' >> /root/apps/url-shortener/.env &&
           chmod 600 /root/apps/url-shortener/.env"
