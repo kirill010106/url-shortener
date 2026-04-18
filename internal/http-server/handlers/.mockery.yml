@@ -1,10 +1,10 @@
 template: testify
 packages:
-    url-shortener/internal/http-server/handlers/redirect:
+    url-shortener/internal/http-server/handlers/del:
         config:
             dir: "{{.InterfaceDir}}"
-            filename: "URLGetter.go"
-            pkgname: "redirect"
+            filename: "URLDeleter.go"
+            pkgname: "del"
             structname: "Mock{{.InterfaceName}}"
         interfaces:
-            URLGetter:
+            URLDeleter:

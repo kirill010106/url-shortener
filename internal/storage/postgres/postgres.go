@@ -1,3 +1,4 @@
+// Package postgres provides PostgreSQL-backed URL storage.
 package postgres
 
 import (
@@ -6,7 +7,6 @@ import (
 	"fmt"
 
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 )
 
 var ErrURLNotFound = errors.New("URL not found")
@@ -86,7 +86,7 @@ func (s *Storage) GetURL(alias string) (string, error) {
 	return url, nil
 }
 
-// TODO: Implement a handler for this method
+// DeleteURL deletes a URL by alias.
 func (s *Storage) DeleteURL(alias string) error {
 	const op = "storage.postgres.DeleteURL"
 	res, err := s.db.Exec(

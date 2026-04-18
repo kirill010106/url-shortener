@@ -3,6 +3,7 @@ package tests
 import (
 	"net/http"
 	"net/url"
+	"os"
 	"testing"
 	"url-shortener/internal/http-server/handlers/url/save"
 	"url-shortener/internal/lib/api"
@@ -18,6 +19,8 @@ const (
 )
 
 func TestURLShortener_HappyPath(t *testing.T) {
+	userToken := testUserToken(t)
+
 	u := url.URL{
 		Scheme: "http",
 		Host:   host,
@@ -29,7 +32,7 @@ func TestURLShortener_HappyPath(t *testing.T) {
 			URL:   gofakeit.URL(),
 			Alias: random.NewRandomString(10),
 		}).
-		WithBasicAuth("admin", "123456").
+		WithHeader("Authorization", "Bearer "+userToken).
 		Expect().
 		Status(200).
 		JSON().Object().
@@ -37,6 +40,9 @@ func TestURLShortener_HappyPath(t *testing.T) {
 }
 
 func TestURLShortener_SaveRedirectDelete(t *testing.T) {
+	userToken := testUserToken(t)
+	adminToken := testAdminToken(t)
+
 	testCases := []struct {
 		name  string
 		url   string
@@ -76,7 +82,7 @@ func TestURLShortener_SaveRedirectDelete(t *testing.T) {
 					URL:   tc.url,
 					Alias: tc.alias,
 				}).
-				WithBasicAuth("admin", "123456").
+				WithHeader("Authorization", "Bearer "+userToken).
 				Expect().Status(http.StatusOK).
 				JSON().Object()
 
@@ -101,10 +107,32 @@ func TestURLShortener_SaveRedirectDelete(t *testing.T) {
 
 			// Delete
 			e.DELETE("/url/"+alias).
-				WithBasicAuth("admin", "123456").
+				WithHeader("Authorization", "Bearer "+adminToken).
 				Expect().Status(http.StatusOK)
 		})
 	}
+}
+
+func testUserToken(t *testing.T) string {
+	t.Helper()
+
+	token := os.Getenv("TEST_TOKEN_USER")
+	if token == "" {
+		t.Skip("TEST_TOKEN_USER is not set")
+	}
+
+	return token
+}
+
+func testAdminToken(t *testing.T) string {
+	t.Helper()
+
+	token := os.Getenv("TEST_TOKEN_ADMIN")
+	if token == "" {
+		t.Skip("TEST_TOKEN_ADMIN is not set")
+	}
+
+	return token
 }
 
 func testRedirect(t *testing.T, alias, urlToRedirect string) {
